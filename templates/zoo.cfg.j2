@@ -1,0 +1,19 @@
+### Minimum Configuration ######################################
+clientPort={{ zookeeper_clientPort }}
+dataDir={{ zookeeper_dataDir }}
+tickTime={{ zookeeper_tickTime }}
+
+
+### Advanced Configuration #####################################
+## FIXME(@y_hashida): 時間のあるときに, コメントアウトしているオプションも ansible から設定できるようにする.
+#dataLogDir
+#preAllocSize
+#clientPortAddress
+
+
+### Cluster Options ############################################
+initLimit={{ zookeeper_initLimit }}
+syncLimit={{ zookeeper_syncLimit }}
+{% for _ip in zookeeper_server_ips %}
+server.{{ loop.index }}={{ _ip }}:2888:3888
+{% endfor %}
