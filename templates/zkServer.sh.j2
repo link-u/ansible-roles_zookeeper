@@ -1,0 +1,16 @@
+#!/bin/bash
+
+USAGE="USAGE: zkServer.sh {start|start-foreground|stop|version|restart|status|print-cmd}";
+
+case "$1" in
+  start |start-foreground |stop | version | restart | status | print-cmd )
+    /opt/zookeeper/apache-zookeeper-{{ zookeeper_version }}-bin/bin/zkServer.sh \
+      $1 \
+      /opt/zookeeper/conf/zoo.cfg
+    ;;
+
+  * )
+    echo "${USAGE}";
+    exit 1;
+    ;;
+esac

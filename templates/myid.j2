@@ -1,0 +1,5 @@
+{% for _ip in zookeeper_server_ips %}
+{% if _ip == local_ipv4 %}
+{{ loop.index }}
+{% endif %}
+{% endfor %}

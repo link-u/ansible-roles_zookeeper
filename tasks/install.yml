@@ -1,0 +1,18 @@
+---
+# install/main.yml (zookeeper)
+# Prefix : zookeeper
+
+- name: Install zookeeper
+  apt:
+    name:
+      - "zookeeper"
+      - "zookeeper-bin"
+      - "zookeeperd"
+    state: present
+    update_cache: yes
+
+- name: Systemd enabled
+  systemd:
+    name: zookeeper.service
+    enabled: yes
+    state: started

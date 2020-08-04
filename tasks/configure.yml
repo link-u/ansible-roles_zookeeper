@@ -1,0 +1,48 @@
+---
+# configure/main.yml (zookeeper)
+# Prefix : zookeeper
+
+- name: Create data directory
+  file:
+    path: "{{ zookeeper_dataDir }}"
+    state: "directory"
+    owner: "zookeeper"
+    group: "zookeeper"
+    mode: "0750"
+
+- name: Set conf/zoo.cfg
+  template:
+    src: "zoo.cfg.j2"
+    dest: "/etc/zookeeper/conf/zoo.cfg"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  register: __zookeeper_conf
+
+## Set myid タスクについて
+#  - zoo.cfg にて, server.<n> と指定したマシンに myid というファイルに <n> を書き込む
+#  - 例)
+#    server.1 と指定したマシンについて
+#      $ echo 1 | sudo tee /var/lib/zookeeper/myid
+#    server.2 と指定したマシンについて
+#      $ echo 2 | sudo tee /var/lib/zookeeper/myid
+#    server.3 と指定したマシンについて
+#      $ echo 3 | sudo tee /var/lib/zookeeper/myid
+- name: Set myid
+  template:
+    src: "myid.j2"
+    dest: "{{ zookeeper_dataDir }}/myid"
+    mode: "0644"
+    owner: "zookeeper"
+    group: "zookeeper"
+  register: __zookeeper_myid
+
+## TODO(@y_hashida): 再起動をシリアル化したい.
+- name: Restart zookeeperd
+  systemd:
+    name: zookeeper.service
+    state: restarted
+    enabled: yes
+  when: >-
+    __zookeeper_conf.changed or
+    __zookeeper_myid.changed

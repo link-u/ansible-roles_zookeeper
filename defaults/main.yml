@@ -1,0 +1,21 @@
+---
+# defaults/main.yml (zookeeper)
+# Prefix : zookeeper
+
+### インストール設定 ###############################################################################
+## 基本設定
+zookeeper_install_flag: True          # インストールフラグ
+
+
+### zookeeper の設定 ##############################################################################
+## 基本設定
+zookeeper_tickTime: "2000"
+zookeeper_dataDir: "/var/lib/zookeeper"
+zookeeper_clientPort: "2181"
+zookeeper_initLimit: "5"
+zookeeper_syncLimit: "2"
+
+## クラスタに関する設定
+zookeeper_server_ips: >-
+  {{ (group_names | map('extract', groups) | list)[0] |
+      map('extract', hostvars, 'local_ipv4') | list }}
