@@ -1,5 +1,7 @@
 # ZooKeeper
 
+![ansible ci](https://github.com/link-u/ansible-roles_zookeeper/workflows/ansible%20ci/badge.svg)
+
 ## 概要
 
 ZooKeeper をインストールする ansible role
